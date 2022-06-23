@@ -1,0 +1,76 @@
+name: 'Blackduck'
+description: 'blackduck scan'
+inputs:
+  hubURL:
+    description: 'url to blackduck'
+    required: true
+  hubToken:
+    description: 'url to token'
+    required: true
+  projectType:
+    description: 'maven, npm, ios or android'
+    required: true
+  projectName:
+    description: 'project name to be used in Blackduck'
+    required: true
+  version:
+    description: 'Version label of the current build'
+    required: false
+    default: 'latest'
+  sourcePath:
+    description: 'Root path where the scanned artifact is built (e.g. directory where the pom.xml aggregating final artifact dependencies lives in).'
+    required: false
+    default: '.'
+  detectCodeLocationClassifier:
+    description: 'Append a classifier value to detect.code.location.name property. This is to be used in situations where two or more scan runs need to be mapped to the same scan version.'
+    required: false
+    default: ''
+  detectProjectVersionPhase:
+    description: "If 'version' option is set to 'latest', phase will be DEVELOPMENT. Otherwise PRERELEASE, if not overridden by this option."
+    required: false
+    default: ''
+  detectMavenExcludedScopes:
+    description: 'If target deliverable is built using additional maven profiles please use this option and inform those. Comma separated, no spaces'
+    required: false
+    default: 'test'
+  detectGradleProject:
+    description: 'Use this option to filter to a specific gradle project.'
+    required: false
+    default: ''
+  detectGradleConfiguration:
+    description: ''
+    required: false
+    default: 'releaseRuntimeClasspath'
+  detectExcludedDirectories:
+    description: 'Only valid for npm project type, the paths which should not be scanned. by the signature scanner.'
+    required: false
+    default: '/collections/,/portals/'
+  detectMavenProfiles:
+    description: 'If target deliverable is built using additional maven profiles please use this option and inform those. Comma separated, no spaces.'
+    required: false
+    default: ''
+  detectSearchDepth:
+    description: "Search depth where detector will look for package manager files (i.e. pom.xml) from 'sourcePath' location"
+    required: false
+    default: '0'
+  logLevel:
+    description: 'Log level for Blackduck detect execution'
+    required: false
+    default: 'INFO'
+  defaultErrorExitStatus:
+    description: ''
+    required: false
+    default: '0'
+  enableSignatureScan:
+    description: 'Only valid for npm project type. If enabled, Blackduck signature scan will be conduct. This is not recommended. Package management scans are best advised for optimal component identification.'
+    required: false
+    default: '0'
+  detectMavenProjects:
+    description: "Comma separated list of maven projects to be considered in dependency:tree. Can also be used for exclusion (prefixed with !). E.g. same as '-pl' maven option."
+    required: false
+    default: ''
+runs:
+  using: "composite"
+  steps:
+    - run: blackduck.sh
+      shell: bash
