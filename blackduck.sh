@@ -4,11 +4,17 @@
 
 set -e
 
-export DETECT_LATEST_RELEASE_VERSION=7.1.0
+# Globals
+defaultErrorExitStatus=0
+
+export DETECT_LATEST_RELEASE_VERSION=${hubVersion}
 
 function validateOptions() {
   info "Validating program options"
 
+  require "hubVersion" "${hubVersion}"
+  require "hubURL" "${hubURL}"
+  require "hubToken" "${hubToken}"
   require "projectType" "${projectType}"
   require "projectName" "${projectName}"
 
@@ -105,32 +111,6 @@ function performScaScan() {
   bash <(curl -s -L https://detect.synopsys.com/detect.sh) ${options}
 }
 
-function printHelp() {
-  cat <<-EOF
-    Usage: $(basename "$0") [ARGS]
-
-    Arguments:
-    [--help]
-    [--projectType] (required) maven, npm, ios or android.
-    [--projectName] (required) project name to be used in Blackduck.
-    [--version] Version label of the current build. Default: latest.
-    [--sourcePath] Root path where the scanned artifact is built (e.g. directory where the pom.xml aggregating final artifact dependencies lives in). Default: '.'.
-    [--logLevel] Log level for Blackduck detect execution. Default: INFO.
-    [--detectSearchDepth] Search depth where detector will look for package manager files (i.e. pom.xml) from 'sourcePath' location. Default: 0.
-    [--detectProjectVersionPhase] If 'version' option is set to 'latest', phase will be DEVELOPMENT. Otherwise PRERELEASE, if not overridden by this option.
-    [--detectCodeLocationClassifier] Append a classifier value to detect.code.location.name property. This is to be used in situations where two or more scan runs need to be mapped to the same scan version.
-    [--detectMavenExcludedScopes] Default: test
-    [--detectMavenProfiles] If target deliverable is built using additional maven profiles please use this option and inform those. Comma separated, no spaces.
-    [--detectMavenProjects] Comma separated list of maven projects to be considered in dependency:tree. Can also be used for exclusion (prefixed with \!). E.g. same as '-pl' maven option.
-    [--detectGradleProject] Use this option to filter to a specific gradle project.
-    [--detectGradleConfiguration] Default: releaseRuntimeClasspath.
-    [--enableSignatureScan] Only valid for npm project type. If enabled, Blackduck signature scan will be conduct. This is not recommended. Package management scans are best advised for optimal component identification.
-    [--detectExcludedDirectories] Only valid for npm project type, the paths which should not be scanned. by the signature scanner. Default: '/collections/,/portals/'.
-    [--fail] By default, for abnormal execution or validation failures, this script will exit with status 0, printing errors to stdout, but preserving execution of wrapping program (e.g. your pipeline). Set this option to enforce status 1, for abnormal flows.
-	EOF
-  exit 0
-}
-
 #####################################################
 # For any given parameter/value combination
 # return the value for the parameter, if present.
@@ -140,7 +120,6 @@ function parseOption() {
     echo "${2}"
     return
   fi
-  error "Missing parameter value for argument $1"
 }
 
 function require() { if [ -z "$2" ]; then error "Missing required value for '$1'"; fi; }
@@ -150,10 +129,6 @@ function error() {
 }
 function warn() { echo "WARN: $1" >&2; }
 function info() { echo "INFO: $1" >&2; }
-
-if [ "--help" == "$1" ]; then
-  printHelp
-fi
 
 # Parse arguments
 while (("$#")); do
@@ -165,6 +140,18 @@ while (("$#")); do
   --enableSignatureScan)
     enableSignatureScan=1
     shift 1
+    ;;
+  --hubVersion)
+    hubVersion=$(parseOption $1 $2)
+    shift 2
+    ;;
+  --hubURL)
+    hubURL=$(parseOption $1 $2)
+    shift 2
+    ;;
+  --hubToken)
+    hubToken=$(parseOption $1 $2)
+    shift 2
     ;;
   --projectType)
     projectType=$(parseOption $1 $2)

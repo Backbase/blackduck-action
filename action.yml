@@ -1,11 +1,15 @@
 name: 'Blackduck'
 description: 'blackduck scan'
 inputs:
+  hubVersion:
+    description: 'version of detect tool'
+    required: false
+    default: '7.1.0'
   hubURL:
     description: 'url to blackduck'
     required: true
   hubToken:
-    description: 'url to token'
+    description: 'token to blackduck'
     required: true
   projectType:
     description: 'maven, npm, ios or android'
@@ -57,10 +61,6 @@ inputs:
     description: 'Log level for Blackduck detect execution'
     required: false
     default: 'INFO'
-  defaultErrorExitStatus:
-    description: ''
-    required: false
-    default: '0'
   enableSignatureScan:
     description: 'Only valid for npm project type. If enabled, Blackduck signature scan will be conduct. This is not recommended. Package management scans are best advised for optimal component identification.'
     required: false
@@ -72,5 +72,26 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: blackduck.sh
+    - run: |
+        ${{ github.action_path }}/blackduck.sh \
+        --hubVersion '${{ inputs.hubVersion }}' \
+        --hubURL '${{ inputs.hubURL }}' \
+        --hubToken '${{ inputs.hubToken }}' \
+        --projectType '${{ inputs.projectType }}' \
+        --projectName '${{ inputs.projectName }}' \
+        --version '${{ inputs.version }}' \
+        --sourcePath '${{ inputs.sourcePath }}' \
+        --detectCodeLocationClassifier '${{ inputs.detectCodeLocationClassifier }}' \
+        --detectExcludedDirectories '${{ inputs.detectExcludedDirectories }}' \
+        --detectMavenExcludedScopes '${{ inputs.detectMavenExcludedScopes }}' \
+        --detectMavenProjects '${{ inputs.detectMavenProjects }}' \
+        --detectMavenProfiles '${{ inputs.detectMavenProfiles }}' \
+        --detectGradleConfiguration '${{ inputs.detectGradleConfiguration }}' \
+        --detectGradleProject '${{ inputs.detectGradleProject }}' \
+        --detectProjectVersionPhase '${{ inputs.detectProjectVersionPhase }}' \
+        --detectSearchDepth '${{ inputs.detectSearchDepth }}' \
+        --logLevel '${{ inputs.logLevel }}'
+        
       shell: bash
+
+
