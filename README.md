@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run Synopsys Detect
-      uses: fnxpt/blackduck-action@master
+      uses: fnxpt/blackduck-action@main
       with:
           hubURL: ${{ secrets.BLACKDUCK_URL }}
           hubToken: ${{ secrets.BLACKDUCK_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
           id: get_version
           run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
         - name: Run Synopsys Detect
-          uses: fnxpt/blackduck-action@master
+          uses: fnxpt/blackduck-action@main
           with:
             hubURL: ${{ secrets.BLACKDUCK_URL }}
             hubToken: ${{ secrets.BLACKDUCK_TOKEN }}
