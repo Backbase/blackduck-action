@@ -9,6 +9,10 @@ Configure the action to run Detect.
 Once you have setup a GitHub Workflow with event triggers, you will need to create a _job_ in which the _Detect Action_ will run.  
 Your job will look something like this if all configuration options are used:  
 
+### Requirements
+
+In order to perform this action the job needs to be able to get dependency tree from the package manager, please ensure that the enviroment is configured to access all required dependencies
+
 ## Examples
 
 ### Latest code
