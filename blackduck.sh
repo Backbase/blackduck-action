@@ -7,8 +7,6 @@ set -e
 # Globals
 defaultErrorExitStatus=0
 
-export DETECT_LATEST_RELEASE_VERSION=${hubVersion}
-
 function validateOptions() {
   info "Validating program options"
 
@@ -108,6 +106,9 @@ function performScaScan() {
   esac
 
   # shellcheck disable=SC2090
+  echo "Forcing version ${hubVersion}"
+  
+  export DETECT_LATEST_RELEASE_VERSION="${hubVersion}" && \
   bash <(curl -s -L https://detect.synopsys.com/detect.sh) ${options}
 }
 
