@@ -81,7 +81,7 @@ function performScaScan() {
     else
       options="${options} --detect.tools=DETECTOR"
     fi
-    options="${options} --detect.excluded.detector.types='GIT,MAVEN'"
+    options="${options} --detect.excluded.detector.types=GIT,MAVEN"
     options="${options} --detect.npm.include.dev.dependencies=false"
     ;;
   ios)
