@@ -109,7 +109,7 @@ function performScaScan() {
   echo "Forcing version ${hubVersion}"
   
   export DETECT_LATEST_RELEASE_VERSION="${hubVersion}" && \
-  bash <(curl -s -L https://detect.synopsys.com/detect.sh) ${options}
+  bash <(curl -s -L https://detect.synopsys.com/detect8.sh) ${options}
 }
 
 #####################################################
