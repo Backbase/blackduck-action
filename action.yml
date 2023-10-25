@@ -73,25 +73,6 @@ runs:
   using: "composite"
   steps:
     - run: |
-        ${{ github.action_path }}/blackduck.sh \
-        --hubVersion '${{ inputs.hubVersion }}' \
-        --hubURL '${{ inputs.hubURL }}' \
-        --hubToken '${{ inputs.hubToken }}' \
-        --projectType '${{ inputs.projectType }}' \
-        --projectName '${{ inputs.projectName }}' \
-        --version '${{ inputs.version }}' \
-        --sourcePath '${{ inputs.sourcePath }}' \
-        --detectCodeLocationClassifier '${{ inputs.detectCodeLocationClassifier }}' \
-        --detectExcludedDirectories '${{ inputs.detectExcludedDirectories }}' \
-        --detectMavenExcludedScopes '${{ inputs.detectMavenExcludedScopes }}' \
-        --detectMavenProjects '${{ inputs.detectMavenProjects }}' \
-        --detectMavenProfiles '${{ inputs.detectMavenProfiles }}' \
-        --detectGradleConfiguration '${{ inputs.detectGradleConfiguration }}' \
-        --detectGradleProject '${{ inputs.detectGradleProject }}' \
-        --detectProjectVersionPhase '${{ inputs.detectProjectVersionPhase }}' \
-        --detectSearchDepth '${{ inputs.detectSearchDepth }}' \
-        --logLevel '${{ inputs.logLevel }}'
-        
-      shell: bash
+        echo ":::DEPRECATED:::"
 
 
