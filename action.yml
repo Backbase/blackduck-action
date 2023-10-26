@@ -72,8 +72,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
+    - shell: bash
+      run: |
         echo ":::DEPRECATED:::"
-    shell: bash
+    
 
 
